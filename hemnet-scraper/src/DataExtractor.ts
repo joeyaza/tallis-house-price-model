@@ -66,34 +66,33 @@ export default class DataExtractor {
                         .text()
                         .replace("kr", "")
                         .replace(/\s+/g, ''),
-            houseType = $$("dd.sold-property__attribute-value")
-                        .eq(3)
+            houseType = $$('*:contains("Bostadstyp"):last')
+                        .next()
                         .text()
                         .replace(/\s+/g, ''),
-            assignment = $$("dd.sold-property__attribute-value")
-                        .eq(4)
+            assignment = $$('*:contains("Upplåtelseform"):last')
+                        .next()
                         .text()
                         .replace(/\s+/g, ''),
-            rooms = $$("dd.sold-property__attribute-value")
-                        .eq(5)
+            rooms = $$('*:contains("rum"):last')
                         .text()
                         .replace('rum',"")
                         .replace(/\s+/g, ''),
-            livingArea = $$("dd.sold-property__attribute-value")
-                        .eq(6)
+            livingArea = $$('*:contains("Boarea"):last')
+                        .next()
                         .text()
                         .replace("m²", '')
                         .replace(/\s+/g, ''),
-            extraArea = $$("dd.sold-property__attribute-value")
-                        .eq(7)
+            extraArea = $$('*:contains("Biarea"):last')
+                        .next()
                         .text()
                         .replace("m²", '')
                         .replace(/\s+/g, ''),
-            land = $$("dd.sold-property__attribute-value")
-                    .eq(8)
-                    .text()
-                    .replace("m²", '')
-                    .replace(/\s+/g, ''),
+            land = $$('*:contains("Tomtarea"):last')
+                        .next()
+                        .text()
+                        .replace("m²", '')
+                        .replace(/\s+/g, ''),
             address =  $$("h1.hcl-heading--size1")
                         .text()
                         .replace("Slutpris", "")
