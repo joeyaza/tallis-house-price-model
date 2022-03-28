@@ -2,23 +2,24 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import * as fs from "fs";
 export default class DataExtractor {
-    constructor(tallkrogenSoldUrl, logger) {
-        this.tallkrogenSoldUrl = tallkrogenSoldUrl;
+    constructor(logger) {
         this.logger = logger;
-        this.salesData = [];
-        this.filePath = "../data/salesData.json";
+        this.forSaleData = [];
+        this.soldData = [];
     }
-    async getSoldPropertyData() {
-        await Array.from({ length: await this.getNumberOfPages() }, (_, i) => i + 1).forEach(async (pageNumber) => {
-            const { data: websiteData } = await axios.get(`${this.tallkrogenSoldUrl}${pageNumber}`), property = cheerio.load(websiteData)("li.sold-results__normal-hit");
-            await property.each(await this.extractFromPage.bind(this));
-            this.logger.info("Data extracted from page:", pageNumber);
+    async getSoldPropertyData(soldPropertyUrl) {
+        await Array.from({ length: await this.getNumberOfPages(soldPropertyUrl) }, (_, i) => i + 1).forEach(async (pageNumber) => {
+            const { data: websiteData } = await axios.get(`${soldPropertyUrl}${pageNumber}`), property = cheerio.load(websiteData)("li.sold-results__normal-hit");
+            await property.each(await this.extractFromPage.bind(this, "sold"));
         });
     }
-    ;
-    async getNumberOfPages() {
+    async getForSalePropertyData(forSalePropertyUrl) {
+        const { data: websiteData } = await axios.get(forSalePropertyUrl), property = cheerio.load(websiteData)("li.js-normal-list-item");
+        await property.each(await this.extractFromPage.bind(this, "forSale"));
+    }
+    async getNumberOfPages(soldPropertyUrl) {
         try {
-            const { data: websiteData } = await axios.get(this.tallkrogenSoldUrl + 1), $ = cheerio.load(websiteData), lastPage = $("div.pagination__item").last().prev().text().replace(/\s+/g, '');
+            const { data: websiteData } = await axios.get(soldPropertyUrl + 1), $ = cheerio.load(websiteData), lastPage = $("div.pagination__item").last().prev().text().replace(/\s+/g, '');
             this.logger.info("number of pages to extract from:", lastPage);
             return Number(lastPage);
         }
@@ -26,9 +27,12 @@ export default class DataExtractor {
             throw Error(error.message);
         }
     }
-    ;
-    async extractFromPage(id, el) {
-        const $ = cheerio.load(el), { data: propertyData } = await axios.get($("a").attr('href')), $$ = cheerio.load(propertyData), soldPrice = $$("span.sold-property__price-value")
+    async extractFromPage(exchange, id, el) {
+        const $ = cheerio.load(el), { data: propertyData } = await axios.get($("a").attr('href')), $$ = cheerio.load(propertyData);
+        (exchange === "sold") ? await this.saveSoldData($$) : await this.saveForSaleData($$);
+    }
+    async saveSoldData($$) {
+        const soldPrice = $$("span.sold-property__price-value")
             .text()
             .replace("kr", "")
             .replace(/\s+/g, ''), askingPrice = $$("dd.sold-property__attribute-value")
@@ -61,7 +65,7 @@ export default class DataExtractor {
             .replace("Slutpris", "")
             .replace(/\s+/g, '')
             .split(/(\d+)/), soldDate = $$(".qa-sold-property-metadata time").attr('datetime');
-        await this.salesData.push({
+        await this.soldData.push({
             address: `${address[0]} ${address[1]}`,
             soldDate,
             livingArea,
@@ -74,11 +78,54 @@ export default class DataExtractor {
             soldPrice,
         });
         this.sleep(5000);
-        await this.writeToFile(this.salesData);
+        await this.writeToFile(this.soldData, "sold");
     }
-    async writeToFile(data) {
+    async saveForSaleData($$) {
+        const askingPrice = $$("p.property-info__price")
+            .text()
+            .replace("kr", "")
+            .replace(/\s+/g, ''), houseType = $$('*:contains("Bostadstyp"):last')
+            .next()
+            .text()
+            .replace(/\s+/g, ''), assignment = $$('*:contains("Upplåtelseform"):last')
+            .next()
+            .text()
+            .replace(/\s+/g, ''), rooms = $$('*:contains("rum"):last')
+            .text()
+            .replace('rum', "")
+            .replace(/\s+/g, ''), livingArea = $$('*:contains("Boarea"):last')
+            .next()
+            .text()
+            .replace("m²", '')
+            .replace(/\s+/g, ''), extraArea = $$('*:contains("Biarea"):last')
+            .next()
+            .text()
+            .replace("m²", '')
+            .replace(/\s+/g, ''), land = $$('*:contains("Tomtarea"):last')
+            .next()
+            .text()
+            .replace("m²", '')
+            .replace(/\s+/g, ''), address = $$("h1.hcl-heading--size2")
+            .text()
+            .replace("Slutpris", "")
+            .replace(/\s+/g, '')
+            .split(/(\d+)/);
+        await this.forSaleData.push({
+            address: `${address[0]} ${address[1]}`,
+            livingArea,
+            extraArea,
+            land,
+            rooms,
+            houseType,
+            assignment,
+            askingPrice
+        });
+        this.sleep(5000);
+        await this.writeToFile(this.forSaleData, "forSale");
+    }
+    async writeToFile(data, filePath) {
         try {
-            await fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2));
+            await fs.writeFileSync(`../data/${filePath}Data.json`, JSON.stringify(data, null, 2));
         }
         catch (error) {
             throw Error(error.message);

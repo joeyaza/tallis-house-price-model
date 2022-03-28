@@ -2,7 +2,7 @@
 
 ## What is this?
 
-A web scraper and linear regression model to calculate the price of a house in an area of Southern Stockholm.
+A web scraper and regression models to calculate the price of a house in an area of Southern Stockholm.
 
 ### The Scraper
 
@@ -12,8 +12,9 @@ Can be ran with Node using
 
 ```npm run start```
 
+You can change the locales URL in index.ts
 ### The Notebook
 
-The notebook in /notebooks folder has some data wrangling and cleaning of the data scraped above. It then provides a linear regression model, with the input data largely being the data scraped and the output/ target as price. There are 2 models, one specifically looking at all property for sale and one for 2021.
+The notebook in /notebooks folder has some data wrangling and cleaning of the data scraped above. It then provides some regression models, with the input data being the data scraped and the output/ target as price. There are multiple models.
 
 This needs cleaning up a lot but the jist is there.

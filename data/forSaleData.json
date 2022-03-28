@@ -1,0 +1,35 @@
+[
+  {
+    "address": "Torögatan 71",
+    "livingArea": "83",
+    "extraArea": "68",
+    "land": "498",
+    "rooms": "6",
+    "houseType": "Villa",
+    "assignment_num": "1",
+    "askingPrice": "8495000",
+    "soldYear": "2020"
+  },
+  {
+    "address": "VictorBalcksväg 167",
+    "livingArea": "72",
+    "extraArea": "54",
+    "land": "464",
+    "rooms": "5",
+    "houseType": "Villa",
+    "assignment_num": "1",
+    "askingPrice": "6795000",
+    "soldYear": "2020"
+  },
+  {
+    "address": "Lingvägen 70",
+    "livingArea": "92",
+    "extraArea": "82",
+    "land": "400",
+    "rooms": "4",
+    "houseType": "Villa",
+    "assignment_num": "1",
+    "askingPrice": "6500000",
+    "soldYear": "2020"
+  }
+]
