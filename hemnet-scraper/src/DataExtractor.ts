@@ -70,7 +70,7 @@ export default class DataExtractor {
 						.replace("kr", "")
 						.replace(/\s+/g, ''),
 			askingPrice = $$("dd.sold-property__attribute-value")
-						.eq(1)
+						.eq(0)
 						.text()
 						.replace("kr", "")
 						.replace(/\s+/g, ''),
@@ -173,10 +173,13 @@ export default class DataExtractor {
 				rooms,
 				houseType,
 				assignment,
-				askingPrice
+				askingPrice,
+				forSaleYear: new Date().getFullYear().toString() 
 			});
+
 		this.sleep(5000);
 		await this.writeToFile(this.forSaleData, "forSale");
+		
 	}
 
 	private async writeToFile(data: any, filePath: string): Promise<void> {

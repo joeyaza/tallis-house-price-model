@@ -20,4 +20,5 @@ export interface IForSaleData {
     houseType: string; 
     assignment: string; 
     askingPrice: string; 
+    forSaleYear: string;
 }

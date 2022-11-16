@@ -36,7 +36,7 @@ export default class DataExtractor {
             .text()
             .replace("kr", "")
             .replace(/\s+/g, ''), askingPrice = $$("dd.sold-property__attribute-value")
-            .eq(1)
+            .eq(0)
             .text()
             .replace("kr", "")
             .replace(/\s+/g, ''), houseType = $$('*:contains("Bostadstyp"):last')
@@ -118,7 +118,8 @@ export default class DataExtractor {
             rooms,
             houseType,
             assignment,
-            askingPrice
+            askingPrice,
+            forSaleYear: new Date().getFullYear().toString()
         });
         this.sleep(5000);
         await this.writeToFile(this.forSaleData, "forSale");
