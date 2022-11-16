@@ -1,35 +1,35 @@
 [
   {
-    "address": "Torögatan 71",
-    "livingArea": "83",
-    "extraArea": "68",
-    "land": "498",
+    "address": "Olympiavägen 65",
+    "livingArea": "63",
+    "extraArea": "60",
+    "land": "331",
     "rooms": "6",
     "houseType": "Villa",
-    "assignment_num": "1",
-    "askingPrice": "8495000",
-    "soldYear": "2020"
+    "assignment": "Äganderätt",
+    "askingPrice": "6950000",
+    "forSaleYear": "2022"
   },
   {
-    "address": "VictorBalcksväg 167",
-    "livingArea": "72",
-    "extraArea": "54",
-    "land": "464",
+    "address": "Mörkövägen 70",
+    "livingArea": "66",
+    "extraArea": "62",
+    "land": "493",
     "rooms": "5",
     "houseType": "Villa",
-    "assignment_num": "1",
-    "askingPrice": "6795000",
-    "soldYear": "2020"
+    "assignment": "Äganderätt",
+    "askingPrice": "7300000",
+    "forSaleYear": "2022"
   },
   {
-    "address": "Lingvägen 70",
-    "livingArea": "92",
-    "extraArea": "82",
-    "land": "400",
-    "rooms": "4",
+    "address": "Rörsoppsvägen 32",
+    "livingArea": "107",
+    "extraArea": "107",
+    "land": "554",
+    "rooms": "7",
     "houseType": "Villa",
-    "assignment_num": "1",
-    "askingPrice": "6500000",
-    "soldYear": "2020"
+    "assignment": "Äganderätt",
+    "askingPrice": "8995000",
+    "forSaleYear": "2022"
   }
 ]
